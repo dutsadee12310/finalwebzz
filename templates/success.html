@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สั่งซื้อสำเร็จ - รอรับของได้เล๊ยย!!</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+    <div class="navbar-brand brand-logo">
+        <img src="{{ url_for('static', filename='images/products/logo.png') }}"
+             alt="DutsadeeStore Logo"
+             class="logo-img">
+            <div class="navbar-menu">
+                <a href="/" class="nav-link">หน้าแรก</a>
+                <a href="/cart" class="nav-link">🛒 ตะกร้า</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="success-wrapper">
+    <div class="success-card">
+
+        <h2>✓ สั่งซื้อสำเร็จแล้ว!</h2>
+
+        <p>ขอบคุณที่ใช้บริการ DutsadeeStore</p>
+        <p>เลขที่คำสั่งซื้อ:</p>
+        <h3 class="order-id">{{ order_id }}</h3>
+
+        <ul class="success-info">
+            <li>📦 สินค้าจะถูกจัดส่งภายใน 24 ชั่วโมง</li>
+            <li>📧 สั่งซื้อเรียบร้อย 🎉 เช็กอีเมลได้เลย</li>
+            <li>☎ ติดต่อสอบถาม: 0999999999 หรือ Dudee888</li>
+        </ul>
+
+        <div class="success-actions">
+            <a href="/" class="btn">หน้าหลัก</a>
+            <a href="/cart" class="btn btn-outline">กลับไปช้อปปิ้ง</a>
+        </div>
+
+    </div>
+</main>
+
+    
+</body>
+</html>

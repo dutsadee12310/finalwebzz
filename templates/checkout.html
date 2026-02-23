@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ชำระเงิน - DutsadeeStore</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar">
+    <div class="navbar-brand brand-logo">
+        <img src="{{ url_for('static', filename='images/products/logo.png') }}" alt="Logo">
+        <div class="brand-text">
+            <h1>DutsadeeStore</h1>
+            <p>Gaming GearStore</p>
+        </div>
+    </div>
+
+    <div class="navbar-menu">
+        <a href="/" class="nav-link">หน้าแรก</a>
+        <a href="/cart" class="nav-link">🛒 ตะกร้า</a>
+    </div>
+</nav>
+
+<!-- ================= CHECKOUT ================= -->
+<main class="container">
+    <section class="checkout-section">
+        <h2>ชำระเงิน</h2>
+
+        <div class="checkout-grid">
+
+            <!-- FORM -->
+            <div class="checkout-form">
+                <h3>ข้อมูลการจัดส่ง</h3>
+                <form id="checkoutForm">
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>ชื่อ *</label>
+                            <input type="text" id="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>นามสกุล *</label>
+                            <input type="text" id="lastName" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>อีเมล *</label>
+                        <input type="email" id="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>เบอร์โทรศัพท์ *</label>
+                        <input type="tel" id="phone" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>ที่อยู่ *</label>
+                        <textarea id="address" rows="3" required></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>อำเภอ *</label>
+                            <input type="text" id="district" required>
+                        </div>
+                        <div class="form-group">
+                            <label>จังหวัด *</label>
+                            <input type="text" id="province" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>รหัสไปรษณีย์ *</label>
+                        <input type="text" id="zipcode" required>
+                    </div>
+
+                    <button type="submit" class="btn checkout-btn">
+                        ยืนยันการสั่งซื้อ
+                    </button>
+                </form>
+            </div>
+
+            <!-- SUMMARY -->
+            <div class="order-summary">
+                <h3>สรุปคำสั่งซื้อ</h3>
+
+                {% for item in cart_items %}
+                <div class="summary-row">
+                    <span>{{ item.name }} × {{ item.quantity }}</span>
+                    <span>฿{{ "{:,}".format(item.total) }}</span>
+                </div>
+                {% endfor %}
+
+                <hr>
+
+                <div class="summary-row">
+                    <span>ยอดรวม</span>
+                    <span>฿{{ "{:,}".format(subtotal) }}</span>
+                </div>
+                <div class="summary-row">
+                    <span>ค่าจัดส่ง</span>
+                    <span>฿{{ "{:,}".format(shipping) }}</span>
+                </div>
+                <div class="summary-row total">
+                    <span>รวมทั้งสิ้น</span>
+                    <span>฿{{ "{:,}".format(total|int) }}</span>
+                </div>
+
+                <p class="payment-info">💡 กรุณาตรวจสอบข้อมูลก่อนยืนยัน</p>
+            </div>
+
+        </div>
+    </section>
+</main>
+
+
+
+<script>
+document.getElementById("checkoutForm").addEventListener("submit", function (e) {
+    e.preventDefault(); // ❗ หยุด form submit แบบเดิม
+
+    fetch("/api/order/place", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            // (ตอนนี้ backend ยังไม่ใช้ข้อมูลฟอร์ม ก็ส่งว่างได้)
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            // ✅ redirect ไปหน้า success
+            window.location.href = `/success/${data.order_id}`;
+        } else {
+            alert("เกิดข้อผิดพลาดในการสั่งซื้อ");
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        alert("เชื่อมต่อเซิร์ฟเวอร์ไม่ได้");
+    });
+});
+</script>
+
+
+</body>
+</html>
